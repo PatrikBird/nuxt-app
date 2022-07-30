@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import p5 from "p5"
+import p5 from 'p5'
 
 const sketch = (p5: p5) => {
   let points = []
@@ -7,7 +7,7 @@ const sketch = (p5: p5) => {
     p5.createCanvas(window.innerWidth, window.innerHeight)
     p5.pixelDensity(2)
     p5.angleMode(p5.DEGREES)
-    p5.noiseDetail(1)
+    p5.noiseDetail(1, 1)
     let density = 100
 
     for (var x = 0; x <= p5.width; x += p5.width / density) {
@@ -26,15 +26,21 @@ const sketch = (p5: p5) => {
         for (var i = 0; i < points.length; i++) {
           var r = p5.map(points[i].x, 0, p5.width, 50, 255)
           var g = p5.map(points[i].y, 0, p5.height, 255, 50)
-          var b = p5.map(points[i].x, 0, p5.width, 255, 50)     
+          var b = p5.map(points[i].x, 0, p5.width, 255, 50)
           p5.fill(r, g, b, 10)
-          var angle = p5.map(p5.noise(points[i].x * mult, points[i].y * mult), 0, 1, 0, 720)
+          var angle = p5.map(
+            p5.noise(points[i].x * mult, points[i].y * mult),
+            0,
+            1,
+            0,
+            720
+          )
           points[i].add(p5.createVector(p5.cos(angle), p5.sin(angle)))
           p5.ellipse(points[i].x, points[i].y, 1)
         }
       }
     } else {
-      p5.noLoop();
+      p5.noLoop()
     }
   }
 }
@@ -51,9 +57,9 @@ const sketch = (p5: p5) => {
 
 <style>
 .test {
-  position:absolute;
-  left:0;
-  top:0;
-  z-index:-1;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
 }
 </style>

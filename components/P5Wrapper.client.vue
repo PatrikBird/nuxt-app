@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps(["sketch"])
+const props = defineProps(['sketch'])
 const sketch = props.sketch
 </script>
 
