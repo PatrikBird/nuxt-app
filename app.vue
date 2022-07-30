@@ -2,35 +2,39 @@
 import p5 from "p5"
 
 const sketch = (p5: p5) => {
+  let points = []
   p5.setup = () => {
     p5.createCanvas(window.innerWidth, window.innerHeight)
+    p5.pixelDensity(2)
     p5.angleMode(p5.DEGREES)
+    p5.noiseDetail(1)
+    let density = 100
+
+    for (var x = 0; x <= p5.width; x += p5.width / density) {
+      for (var y = 0; y <= p5.height; y += p5.width / density) {
+        var p = p5.createVector(x + p5.random(-10, 10), y + p5.random(-10, 10))
+        points.push(p)
+      }
+    }
+    p5.background(245, 245, 245)
   }
   p5.draw = () => {
-    p5.background(20)
-    p5.strokeWeight(2)
-    p5.noFill()
-
-    p5.translate(p5.width / 2, p5.height / 2)
-
-    for (var t = 0; t < 5; t++) {
-      p5.stroke(100 - t * 20, 150 - t * 30, 220 - t * 30)
-      p5.beginShape()
-      for (var i = 0; i < 359; i++) {
-        var r1Min = p5.map(p5.sin(p5.frameCount), -1, 1, 50, 120)
-        var r1Max = p5.map(p5.sin(p5.frameCount * 2), -1, 1, 100, 20)
-    
-        var r2Min = p5.map(p5.sin(p5.frameCount / 2), -1, 1, 120, 50)
-        var r2Max = p5.map(p5.sin(p5.frameCount), -1, 1, 20, 100)
-    
-        var r1 = p5.map(p5.sin(i * 3), -1, 1, r1Min, r1Max)
-        var r2 = p5.map(p5.sin(i * 6 + 90), -1, 1, r2Min, r2Max)
-        var r = r1 + r2 - t * 10
-        var x = r * p5.cos(i)
-        var y = r * p5.sin(i)
-        p5.vertex(x, y)
+    if (p5.frameCount < 400) {
+      p5.noStroke()
+      var mult = 0.01
+      for (var j = 0; j < 1; j++) {
+        for (var i = 0; i < points.length; i++) {
+          var r = p5.map(points[i].x, 0, p5.width, 50, 255)
+          var g = p5.map(points[i].y, 0, p5.height, 255, 50)
+          var b = p5.map(points[i].x, 0, p5.width, 255, 50)     
+          p5.fill(r, g, b, 10)
+          var angle = p5.map(p5.noise(points[i].x * mult, points[i].y * mult), 0, 1, 0, 720)
+          points[i].add(p5.createVector(p5.cos(angle), p5.sin(angle)))
+          p5.ellipse(points[i].x, points[i].y, 1)
+        }
       }
-      p5.endShape(p5.CLOSE)
+    } else {
+      p5.noLoop();
     }
   }
 }
@@ -38,7 +42,18 @@ const sketch = (p5: p5) => {
 
 <template>
   <div>
-    <P5Wrapper :sketch="sketch" />
-    <NuxtWelcome />
+    <P5Wrapper class="test" :sketch="sketch" />
+    <div>
+      <h1>Hi :)</h1>
+    </div>
   </div>
 </template>
+
+<style>
+.test {
+  position:absolute;
+  left:0;
+  top:0;
+  z-index:-1;
+}
+</style>
