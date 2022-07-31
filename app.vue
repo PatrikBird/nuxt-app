@@ -54,20 +54,21 @@ const sketch = (p5: p5) => {
   let particles = []
   let colors = []
   let parNum = 1000
-  let mySize
 
   p5.setup = () => {
-    mySize = p5.min(window.innerWidth, window.innerHeight)
     p5.pixelDensity(5)
     p5.createCanvas(window.innerWidth, window.innerHeight)
+
     p5.colorMode(p5.HSB, 360, 100, 100, 100)
-    colors[0] = p5.color(90)
-    colors[1] = p5.color(80)
+    colors[0] = p5.color(p5.random(80, 90))
+    colors[1] = p5.color(p5.random(80, 90))
+
     for (let i = 0; i < parNum; i++) {
       particles.push(new Particle(p5.random(p5.width), p5.random(p5.height)))
     }
     p5.background(255, 255, 255, 0)
   }
+
   p5.draw = () => {
     for (let j = particles.length - 1; j > 0; j--) {
       particles[j].update()
