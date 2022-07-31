@@ -86,6 +86,7 @@ const sketch = (p5: p5) => {
 
 <template>
   <div>
+    <!-- <Navbar /> -->
     <P5Wrapper class="test" :sketch="sketch" />
     <div>
       <h1>Hi :)</h1>
